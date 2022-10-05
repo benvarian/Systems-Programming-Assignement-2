@@ -43,16 +43,9 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-        // if (optind < argc)
-        // {
-        //     printf("Non-option args: ");
-        //     while (optind < argc)
-        //         printf("%s ", argv[optind++]);
-        //     printf("\n");
-        // }
-
+       
         printf("%s:%d\n", f, lvalue);
-
+        // assigns x to ideally the word or filelist, this will get checked in later functions 
         for (int index = optind; index < argc; index++)
             x = argv[index];
 
