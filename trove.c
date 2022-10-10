@@ -1,8 +1,10 @@
 //  CITS2002 Project 2 2022
 //  Student1:   23215049  Varian   Benjamin   100
+
 #include "trovefunc.c"
 
-#define OPTLIST "-:f:brul:"
+#include <getopt.h>
+
 int main(int argc, char *argv[])
 {
     if (argc <= 1)
@@ -43,9 +45,9 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-       
+
         printf("%s:%d\n", f, lvalue);
-        // assigns x to ideally the word or filelist, this will get checked in later functions 
+        // assigns x to ideally the word or filelist, this will get checked in later functions
         for (int index = optind; index < argc; index++)
             x = argv[index];
 
