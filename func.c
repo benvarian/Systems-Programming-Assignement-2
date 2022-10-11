@@ -1,5 +1,17 @@
 #include "trove.h"
 
+void regex(char *fn)
+{
+    char *file = "grep";
+    char *arg1 = "-oE";
+    char *arg2 = "--null-data";
+    char *regexPattern = "\\b\\w{4,}\\b";
+    printf("%s\n", fn);
+
+    if (execlp(file, file, arg1, arg2, regexPattern, fn, (char *)NULL) == -1)
+        perror("error");
+}
+
 void myPrint(void)
 {
     printf("hi");
@@ -9,12 +21,11 @@ void usage(void)
     printf("./trove [-f trovefile] [-b | -r | -u] [-l length] [filelist | word]\n");
 }
 
-void search(char *fn, int indent)
+HASHTABLE *search(char *fn, int indent)
 {
-    printf("%s\n", fn);
     DIR *dir;
     struct dirent *entry;
-
+    HASHTABLE *hashtable = hashtable_new();
     char path[PATH_MAX + 1];
     struct stat info;
 
@@ -36,8 +47,10 @@ void search(char *fn, int indent)
                 }
                 else if (S_ISREG(info.st_mode))
                 {
-                    if (access(path, F_OK) == 0) 
-                        printf("%s:%lld\n", path, info.st_size);
+                    // regex(path);
+                    // printf("%s\n", path);
+                    hashtable_add(hashtable, path);
+                    // perror("error");
                 }
                 else if (S_ISDIR(info.st_mode))
                 {
@@ -48,6 +61,9 @@ void search(char *fn, int indent)
         }
         closedir(dir);
     }
+    int x = hashtable_find(hashtable, "trove-sample-data/src/mycal/first_day_of_month.c");
+    printf("%d\n", x);
+    return hashtable;
 }
 
 int valid(char *fn)

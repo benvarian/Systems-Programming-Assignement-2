@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
         int indent = 0;
         int opt;
         char *f = "";
-        int lvalue = 4;
+        int searchSize = 4;
         bool b, r, u;
         while ((opt = getopt(argc, argv, OPTLIST)) != -1)
         {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
                 u = true;
                 break;
             case 'l':
-                lvalue = atoi(optarg);
+                searchSize = atoi(optarg);
                 break;
             case '?':
                 exit(EXIT_FAILURE);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        printf("%s:%d\n", f, lvalue);
+        printf("%s:%d\n", f, searchSize);
         // assigns x to ideally the word or filelist, this will get checked in later functions
         for (int index = optind; index < argc; index++)
         {
@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
 
                 if (valid(argv[index]))
                     search(argv[index], indent);
+
             }
         }
 
