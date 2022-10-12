@@ -3,15 +3,20 @@
 void regex(char *fn)
 {
     char *file = "grep";
-    char *arg1 = "-oE";
+    char *arg1 = "-aoE";
     char *arg2 = "--null-data";
     char *regexPattern = "\\b\\w{4,}\\b";
+
+    // HASHTABLE *h = hashtable_new();
     printf("%s\n", fn);
+    if (fork() == 0)
+    {
+        if (execlp(file, file, arg1, arg2, regexPattern, fn, (char *)NULL) == -1)
+            perror("error");
+    }
 
-    if (execlp(file, file, arg1, arg2, regexPattern, fn, (char *)NULL) == -1)
-        perror("error");
+    
 }
-
 void myPrint(void)
 {
     printf("hi");
@@ -21,11 +26,11 @@ void usage(void)
     printf("./trove [-f trovefile] [-b | -r | -u] [-l length] [filelist | word]\n");
 }
 
-HASHTABLE *search(char *fn, int indent)
+void search(char *fn, int indent)
 {
     DIR *dir;
     struct dirent *entry;
-    HASHTABLE *hashtable = hashtable_new();
+
     char path[PATH_MAX + 1];
     struct stat info;
 
@@ -47,9 +52,8 @@ HASHTABLE *search(char *fn, int indent)
                 }
                 else if (S_ISREG(info.st_mode))
                 {
-                    // regex(path);
-                    // printf("%s\n", path);
-                    hashtable_add(hashtable, path);
+                    char buf[PATH_MAX];
+                    regex(realpath(path, buf));
                     // perror("error");
                 }
                 else if (S_ISDIR(info.st_mode))
@@ -61,9 +65,6 @@ HASHTABLE *search(char *fn, int indent)
         }
         closedir(dir);
     }
-    int x = hashtable_find(hashtable, "trove-sample-data/src/mycal/first_day_of_month.c");
-    printf("%d\n", x);
-    return hashtable;
 }
 
 int valid(char *fn)

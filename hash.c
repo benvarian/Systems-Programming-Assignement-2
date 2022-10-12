@@ -75,10 +75,6 @@ void list_print(LIST *list)
         }
         printf("\n");
     }
-    else
-    {
-        printf("empty\n");
-    }
 }
 
 uint32_t hash_string(char *string)
@@ -121,3 +117,4 @@ bool hashtable_find(HASHTABLE *hashtable, char *string)
 
     return list_find(hashtable[h], string);
 }
+

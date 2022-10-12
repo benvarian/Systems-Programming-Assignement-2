@@ -9,6 +9,14 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <stdint.h>
+#include <fcntl.h>
+
+#define die(e)                      \
+    do                              \
+    {                               \
+        fprintf(stderr, "%s\n", e); \
+        exit(EXIT_FAILURE);         \
+    } while (0);
 
 #define HASHTABLE_SIZE 991
 typedef struct _list
@@ -22,7 +30,7 @@ typedef LIST *HASHTABLE;
 extern void usage(void);
 // extern void print(bool, bool, bool, char *);
 extern void myPrint(void);
-extern HASHTABLE *search(char *, int);
+extern void search(char *, int);
 // Checks if the directory addtional arg is a directory or file
 extern int valid(char *);
 // regex function
@@ -49,4 +57,4 @@ extern bool list_find(LIST *list, char *wanted);
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
 extern void list_print(LIST *list);
 
-
+extern void print_hash(HASHTABLE *);
