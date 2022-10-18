@@ -15,56 +15,11 @@ void regex(char *fn)
         {
             printf("%s\n", buf);
         }
-        // printf("%s:%d\n", buf, validWord(buf, size));
-
-        // if (isprint(atoi(buf)) || ispunct(atoi(buf)) || iscntrl(atoi(buf)) == 0)
-        //     continue;
+       
     }
     fclose(fp);
 
-    // char *cmd = "grep";
-    // char *arg1 = "-raoE";
-    // char *arg2 = "--null-data";
-    // char *regexPattern = "\\b\\w{4,}\\b";
-
-    // // HASHTABLE *h = hashtable_new();
-
-    // int pid = fork();
-    // if (pid == -1)
-    // {
-    //     perror("error");
-    // }
-    // if (pid == 0)
-    // {
-    //     int file = open("results.txt", O_WRONLY | O_CREAT, 0777);
-    //     if (file == -1)
-    //     {
-    //         perror("err");
-    //     }
-    //     dup2(file, STDOUT_FILENO);
-    //     printf("%s:", fn);
-    //     close(file);
-    //     int err = execlp(cmd, cmd, arg1, arg2, regexPattern, fn, (char *)NULL);
-    //     if (err == -1)
-    //     {
-    //         perror("couldnt run");
-    //     }
-    // }
-    // else
-    // {
-    //     int wstatus;
-    //     wait(&wstatus);
-    //     if (WIFEXITED(wstatus))
-    //     {
-    //         int statuscode = WEXITSTATUS(wstatus);
-    //         if (statuscode != 0)
-    //         {
-    //             perror("error");
-    //             exit(EXIT_FAILURE);
-    //         }
-    //     }
-    //     // removeFile("results.txt");
-    // }
+    
 }
 void myPrint(void)
 {
