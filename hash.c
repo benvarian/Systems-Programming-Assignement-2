@@ -106,7 +106,7 @@ HASHTABLE *hashtable_new(void)
 void hashtable_add(HASHTABLE *hashtable, char *string)
 {
     uint32_t h = hash_string(string) % HASHTABLE_SIZE; // choose list
-    printf("%d:%s\n", h, string);
+    // printf("%d:%s\n", h, string);
     hashtable[h] = list_add(hashtable[h], string);
 }
 
@@ -118,3 +118,11 @@ bool hashtable_find(HASHTABLE *hashtable, char *string)
     return list_find(hashtable[h], string);
 }
 
+void hashtable_print(HASHTABLE *h)
+{
+    for (int i = 0; i < HASHTABLE_SIZE; i++)
+    {
+        printf("\n--%i--", i);
+        list_print(h[i]);
+    }
+}

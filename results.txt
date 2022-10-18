@@ -1,4 +1,10 @@
-/Users/benvarian/Documents/GitHub/Systems-Programming-Assignement-2/trove-sample-data/img/csseduck.png:IHDR
+pizza:have
+pizza:pizza
+pizza:with
+pizza:radius
+pizza:thickness
+pizza:volume
+mple-data/img/csseduck.png:IHDR
 /Users/benvarian/Documents/GitHub/Systems-Programming-Assignement-2/trove-sample-data/img/csseduck.png:sRGB
 /Users/benvarian/Documents/GitHub/Systems-Programming-Assignement-2/trove-sample-data/img/csseduck.png:PeXIfMM
 /Users/benvarian/Documents/GitHub/Systems-Programming-Assignement-2/trove-sample-data/img/csseduck.png:YiTXtXML

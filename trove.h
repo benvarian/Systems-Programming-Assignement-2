@@ -18,7 +18,7 @@
         exit(EXIT_FAILURE);         \
     } while (0);
 
-#define HASHTABLE_SIZE 991
+#define HASHTABLE_SIZE 997
 typedef struct _list
 {
     char *string;
@@ -32,9 +32,11 @@ extern void usage(void);
 extern void myPrint(void);
 extern void search(char *, int);
 // Checks if the directory addtional arg is a directory or file
-extern int valid(char *);
+extern int isDirectory(char *);
 // regex function
 extern void regex(char *);
+// remove the created results file
+extern void removeFile(char *);
 
 //  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
 extern HASHTABLE *hashtable_new(void);
@@ -57,4 +59,4 @@ extern bool list_find(LIST *list, char *wanted);
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
 extern void list_print(LIST *list);
 
-extern void print_hash(HASHTABLE *);
+extern void hashtable_print(HASHTABLE *);

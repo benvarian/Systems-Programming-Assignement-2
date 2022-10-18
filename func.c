@@ -8,17 +8,11 @@ void regex(char *fn)
     char *regexPattern = "\\b\\w{4,}\\b";
 
     // HASHTABLE *h = hashtable_new();
-    // printf("%s\n", fn);
-    // if (fork() == 0)
-    // {
-    //     if (execlp(file, file, arg1, arg2, regexPattern, fn, (char *)NULL) == -1)
-    //         perror("error");
-    // }
+
     int pid = fork();
     if (pid == -1)
     {
         perror("error");
-        // return 1;
     }
     if (pid == 0)
     {
@@ -28,6 +22,7 @@ void regex(char *fn)
             perror("err");
         }
         dup2(file, STDOUT_FILENO);
+        printf("%s:", fn);
         close(file);
         int err = execlp(cmd, cmd, arg1, arg2, regexPattern, fn, (char *)NULL);
         if (err == -1)
@@ -48,6 +43,7 @@ void regex(char *fn)
                 exit(EXIT_FAILURE);
             }
         }
+        // removeFile("results.txt");
     }
 }
 void myPrint(void)
@@ -63,7 +59,7 @@ void search(char *fn, int indent)
 {
     DIR *dir;
     struct dirent *entry;
-
+    HASHTABLE *hashtable = hashtable_new();
     char path[PATH_MAX + 1];
     struct stat info;
 
@@ -86,8 +82,9 @@ void search(char *fn, int indent)
                 else if (S_ISREG(info.st_mode))
                 {
                     char buf[PATH_MAX];
-                    regex(realpath(path, buf));
+                    // regex(realpath(path, buf));
                     // perror("error");
+                    hashtable_add(hashtable, realpath(path, buf));
                 }
                 else if (S_ISDIR(info.st_mode))
                 {
@@ -98,21 +95,28 @@ void search(char *fn, int indent)
         }
         closedir(dir);
     }
+    hashtable_print(hashtable);
 }
 
-int valid(char *fn)
+int isDirectory(char *fn)
 {
     char buf[PATH_MAX];
-
     char *res = realpath(fn, buf);
-    if (res)
-    {
-        // printf("%s\n", res);
-        return 1;
-    }
-    else
+    struct stat statbuf;
+    if (!res)
     {
         perror("Path Error");
         return 0;
+    }
+    if (stat(res, &statbuf) != 0)
+        return 0;
+    return S_ISDIR(statbuf.st_mode);
+}
+
+void removeFile(char *file)
+{
+    if (remove("results.txt") != 0)
+    {
+        perror("Coludnt Remove File");
     }
 }
