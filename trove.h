@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <stdint.h>
 #include <fcntl.h>
+#include <ctype.h>
 
 #define die(e)                      \
     do                              \
@@ -37,6 +38,8 @@ extern int isDirectory(char *);
 extern void regex(char *);
 // remove the created results file
 extern void removeFile(char *);
+// validate if a word is valid or not
+extern bool validWord(char [], int);
 
 //  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
 extern HASHTABLE *hashtable_new(void);

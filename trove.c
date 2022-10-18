@@ -58,16 +58,16 @@ int main(int argc, char *argv[])
                 // debug
                 // printf("\nbuilding a trove file \n");
                 // printf("%s", argv[index]);
-
-                // if (isDirectory(argv[index]))
-                // {
-                //     // printf("%d", isDirectory(argv[index]));
-                search(argv[index], indent);
-                // }
-                // else
-                // {
-                // regex(argv[index]);
-                // }
+                
+                if (isDirectory(argv[index]))
+                {
+                    // printf("%d", isDirectory(argv[index]));
+                    search(argv[index], indent);
+                }
+                else
+                {
+                    regex(argv[index]);
+                }
             }
         }
 

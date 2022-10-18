@@ -2,49 +2,69 @@
 
 void regex(char *fn)
 {
-    char *cmd = "grep";
-    char *arg1 = "-raoE";
-    char *arg2 = "--null-data";
-    char *regexPattern = "\\b\\w{4,}\\b";
+    // // reads space by space or other characters like - _ +
+    // // then test the length of the word with the length then if its valid hashtable_add
+    // if is valid add to gloably declared hashtable
+    FILE *fp = fopen(fn, "r");
+    int size = 4;
+    char buf[PATH_MAX];
+    // while (fgets(buf, size, fp) != NULL)
+    while (fscanf(fp, "%1023s", buf) != EOF)
+    {
+        if (validWord(buf, size))
+        {
+            printf("%s\n", buf);
+        }
+        // printf("%s:%d\n", buf, validWord(buf, size));
 
-    // HASHTABLE *h = hashtable_new();
+        // if (isprint(atoi(buf)) || ispunct(atoi(buf)) || iscntrl(atoi(buf)) == 0)
+        //     continue;
+    }
+    fclose(fp);
 
-    int pid = fork();
-    if (pid == -1)
-    {
-        perror("error");
-    }
-    if (pid == 0)
-    {
-        int file = open("results.txt", O_WRONLY | O_CREAT, 0777);
-        if (file == -1)
-        {
-            perror("err");
-        }
-        dup2(file, STDOUT_FILENO);
-        printf("%s:", fn);
-        close(file);
-        int err = execlp(cmd, cmd, arg1, arg2, regexPattern, fn, (char *)NULL);
-        if (err == -1)
-        {
-            perror("couldnt run");
-        }
-    }
-    else
-    {
-        int wstatus;
-        wait(&wstatus);
-        if (WIFEXITED(wstatus))
-        {
-            int statuscode = WEXITSTATUS(wstatus);
-            if (statuscode != 0)
-            {
-                perror("error");
-                exit(EXIT_FAILURE);
-            }
-        }
-        // removeFile("results.txt");
-    }
+    // char *cmd = "grep";
+    // char *arg1 = "-raoE";
+    // char *arg2 = "--null-data";
+    // char *regexPattern = "\\b\\w{4,}\\b";
+
+    // // HASHTABLE *h = hashtable_new();
+
+    // int pid = fork();
+    // if (pid == -1)
+    // {
+    //     perror("error");
+    // }
+    // if (pid == 0)
+    // {
+    //     int file = open("results.txt", O_WRONLY | O_CREAT, 0777);
+    //     if (file == -1)
+    //     {
+    //         perror("err");
+    //     }
+    //     dup2(file, STDOUT_FILENO);
+    //     printf("%s:", fn);
+    //     close(file);
+    //     int err = execlp(cmd, cmd, arg1, arg2, regexPattern, fn, (char *)NULL);
+    //     if (err == -1)
+    //     {
+    //         perror("couldnt run");
+    //     }
+    // }
+    // else
+    // {
+    //     int wstatus;
+    //     wait(&wstatus);
+    //     if (WIFEXITED(wstatus))
+    //     {
+    //         int statuscode = WEXITSTATUS(wstatus);
+    //         if (statuscode != 0)
+    //         {
+    //             perror("error");
+    //             exit(EXIT_FAILURE);
+    //         }
+    //     }
+    //     // removeFile("results.txt");
+    // }
 }
 void myPrint(void)
 {
@@ -59,10 +79,8 @@ void search(char *fn, int indent)
 {
     DIR *dir;
     struct dirent *entry;
-    HASHTABLE *hashtable = hashtable_new();
     char path[PATH_MAX + 1];
     struct stat info;
-
     if ((dir = opendir(fn)) == NULL)
         perror("opendir() error");
     else
@@ -82,20 +100,18 @@ void search(char *fn, int indent)
                 else if (S_ISREG(info.st_mode))
                 {
                     char buf[PATH_MAX];
-                    // regex(realpath(path, buf));
+                    regex(realpath(path, buf));
                     // perror("error");
-                    hashtable_add(hashtable, realpath(path, buf));
+                    // printf("%s\n", realpath(path, buf));
                 }
                 else if (S_ISDIR(info.st_mode))
                 {
-                    // printf("%s\n", path);
                     search(path, indent + 1);
                 }
             }
         }
         closedir(dir);
     }
-    hashtable_print(hashtable);
 }
 
 int isDirectory(char *fn)
@@ -118,5 +134,50 @@ void removeFile(char *file)
     if (remove("results.txt") != 0)
     {
         perror("Coludnt Remove File");
+    }
+}
+
+bool validWord(char str[], int len)
+{
+    int hyphen = 0;
+    int size = strlen(str);
+    // printf("%s:%d\n", str, size);
+    // printf("%c:%s:%d\n", str[0], str, isspace(str[0]));
+
+    if (isspace(str[0]) == 0 && ispunct(str[0]) == 0 && size >= len)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (str[i] == '!' || str[i] == '@' || str[i] == '#' || str[i] == '$' || str[i] == '%' || str[i] == '^' || str[i] == '&' || str[i] == '*' || str[i] == '(' || str[i] == ')' || str[i] == '{' || str[i] == '}' || str[i] == '[' || str[i] == ']' || str[i] == ':' || str[i] == ';' || str[i] == '"' || str[i] == '<' || str[i] == '>' || str[i] == '.' || str[i] == '/' || str[i] == '?' || str[i] == '~' || str[i] == '`')
+            {
+                printf("%c:%s", str[i], str);
+                return false;
+            }
+            if (isupper(str[i + 1]))
+                return false;
+            if (str[size - 1] == ',' || str[size - 1] == '.')
+                return true;
+            if (str[i] == 39)
+            {
+                printf("%s", str);
+            }
+            if (str[i] == '-')
+            {
+                // Only 1 hyphen is allowed
+                if (++hyphen > 1)
+                    return false;
+                // hyphen should be surrounded
+                // by letters
+                if (i - 1 < 0 || !isalpha(str[i - 1]) || i + 1 >= size || !isalpha(str[i + 1]))
+                    return false;
+            }
+            if (isalpha(str[i]))
+                return true;
+        }
+        return false;
+    }
+    else
+    {
+        return false;
     }
 }
