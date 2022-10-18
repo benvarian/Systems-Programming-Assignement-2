@@ -8,18 +8,15 @@ void regex(char *fn)
     FILE *fp = fopen(fn, "r");
     int size = 4;
     char buf[PATH_MAX];
-    // while (fgets(buf, size, fp) != NULL)
     while (fscanf(fp, "%1023s", buf) != EOF)
     {
-        if (validWord(buf, size))
-        {
-            printf("%s\n", buf);
-        }
-       
+        // if (validWord(buf, size))
+        // {
+        //     printf("%s\n", buf);
+        // }
+        printf("%s:%d\n", buf, validWord(buf, size));
     }
     fclose(fp);
-
-    
 }
 void myPrint(void)
 {
@@ -105,19 +102,19 @@ bool validWord(char str[], int len)
         {
             if (str[i] == '!' || str[i] == '@' || str[i] == '#' || str[i] == '$' || str[i] == '%' || str[i] == '^' || str[i] == '&' || str[i] == '*' || str[i] == '(' || str[i] == ')' || str[i] == '{' || str[i] == '}' || str[i] == '[' || str[i] == ']' || str[i] == ':' || str[i] == ';' || str[i] == '"' || str[i] == '<' || str[i] == '>' || str[i] == '.' || str[i] == '/' || str[i] == '?' || str[i] == '~' || str[i] == '`')
             {
-                printf("%c:%s", str[i], str);
                 return false;
             }
-            if (isupper(str[i + 1]))
+            if (isalpha(str[i]))
+                continue;
+            if (isupper(str[i]))
                 return false;
             if (str[size - 1] == ',' || str[size - 1] == '.')
                 return true;
-            if (str[i] == 39)
-            {
-                printf("%s", str);
-            }
+            if (str[i] == '\'' && str[i - 1] != '\0')
+                return true;
             if (str[i] == '-')
             {
+
                 // Only 1 hyphen is allowed
                 if (++hyphen > 1)
                     return false;
@@ -126,10 +123,8 @@ bool validWord(char str[], int len)
                 if (i - 1 < 0 || !isalpha(str[i - 1]) || i + 1 >= size || !isalpha(str[i + 1]))
                     return false;
             }
-            if (isalpha(str[i]))
-                return true;
         }
-        return false;
+        return true;
     }
     else
     {
