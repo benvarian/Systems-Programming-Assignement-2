@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     {
         int indent = 0;
         int opt;
-        char *f = "";
+        char *f = "/tmp/trove";
         int searchSize = 4;
         bool b, r, u;
         while ((opt = getopt(argc, argv, OPTLIST)) != -1)
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
             switch (opt)
             {
             case 'f':
+                f = NULL;
                 f = strndup(optarg, strlen(optarg));
                 break;
             case 'b':
@@ -48,25 +49,19 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-
-        printf("%s:%d\n", f, searchSize);
-        // assigns x to ideally the word or filelist, this will get checked in later functions
-        for (int index = optind; index < argc; index++)
+        if (b | r | u)
         {
-            if (b | r | u)
+            printf("\nBuilding a trove file...\n");
+            troveFile(f,b);
+            for (int index = optind; index < argc; index++)
             {
-                // debug
-                // printf("\nbuilding a trove file \n");
-                // printf("%s", argv[index]);
-                
                 if (isDirectory(argv[index]))
                 {
-                    // printf("%d", isDirectory(argv[index]));
-                    search(argv[index], indent);
+                    search(argv[index], indent, searchSize);
                 }
                 else
                 {
-                    regex(argv[index]);
+                    regex(argv[index], searchSize);
                 }
             }
         }

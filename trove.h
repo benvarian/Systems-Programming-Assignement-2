@@ -31,15 +31,17 @@ typedef LIST *HASHTABLE;
 extern void usage(void);
 // extern void print(bool, bool, bool, char *);
 extern void myPrint(void);
-extern void search(char *, int);
+extern void search(char *, int, int);
 // Checks if the directory addtional arg is a directory or file
 extern int isDirectory(char *);
 // regex function
-extern void regex(char *);
+extern void regex(char *, int);
 // remove the created results file
 extern void removeFile(char *);
 // validate if a word is valid or not
-extern bool validWord(char [], int);
+extern bool validWord(char[], int);
+// try to locate the trove file and if it isnt found and b isnt true throw perror
+extern void troveFile(char *, bool );
 
 //  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
 extern HASHTABLE *hashtable_new(void);
