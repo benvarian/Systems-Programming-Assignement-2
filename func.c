@@ -79,13 +79,6 @@ int isDirectory(char *fn)
     return S_ISDIR(statbuf.st_mode);
 }
 
-void removeFile(char *file)
-{
-    if (remove("results.txt") != 0)
-    {
-        perror("Coludnt Remove File");
-    }
-}
 // The criteria for a valid word is that a letter that isnt first is a capital is invalid
 // if it contains any of the listed chars in the first if statment
 // if the word
@@ -186,4 +179,20 @@ void troveFile(char *file, bool b)
             }
         }
     }
+}
+
+char *strndup(const char *s, size_t n)
+{
+    char *p;
+    size_t n1;
+
+    for (n1 = 0; n1 < n && s[n1] != '\0'; n1++)
+        continue;
+    p = malloc(n + 1);
+    if (p != NULL)
+    {
+        memcpy(p, s, n1);
+        p[n1] = '\0';
+    }
+    return p;
 }

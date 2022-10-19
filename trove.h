@@ -36,8 +36,7 @@ extern void search(char *, int, int);
 extern int isDirectory(char *);
 // regex function
 extern void regex(char *, int);
-// remove the created results file
-extern void removeFile(char *);
+
 // validate if a word is valid or not
 extern bool validWord(char[], int);
 // try to locate the trove file and if it isnt found and b isnt true throw perror
@@ -66,16 +65,5 @@ extern void list_print(LIST *list);
 
 extern void hashtable_print(HASHTABLE *);
 
-char *strndup(const char *s, size_t n) {
-	char *p;
-	size_t n1;
-	
-	for (n1 = 0; n1 < n && s[n1] != '\0'; n1++)
-		continue;
-	p = malloc(n + 1);
-	if (p != NULL) {
-		memcpy(p, s, n1);
-		p[n1] = '\0';
-	}						    
-	return p;
-}
+extern char * strndup_daniel(const char *, size_t);
+
