@@ -240,39 +240,42 @@ void zip(char *trove)
     char path[PATH_MAX];
     strcpy(path, "/tmp/");
     strcat(path, trove);
-    int pid = fork();
-
-    if (pid == 0)
+    int status = 0;
+    pid_t childpid = fork();
+    if (childpid == 0)
     {
         if (execl(cmd, cmd2, args, path, (char *)NULL) == -1)
             perror("Error:");
     }
+    (void)wait(&status);
+    printf("done1\n");
 }
+
 void unZip(char *file)
 {
     // HASHTABLE *hash = hashtable_new();
-    // char *cmd = "/usr/bin/zcat";
-    // char *cmd2 = "zcat";
-    // char *flags = "-f";
-
     char path[PATH_MAX];
     strcpy(path, "/tmp/");
     strcat(path, file);
-    strcat(path, ".gz");
     // char *f = realpath(path, NULL);
-    int pid = fork();
-    // if (pid != 0)
-    //     wait(NULL);
-    printf("%d\n", pid);
-    kill(pid - 1,15);
+    // char *cmd = "/usr/bin/zcat";
+    // char *cmd2 = "zcat";
+    // char *flags = "-f";
+    pid_t pid = fork();
+    int stats = 0;
+    // printf("%d\n", pid);
+    char *cmd = "/usr/bin/whoami";
+    char *cmd2 = "whoami";
 
     if (pid == 0)
     {
-        printf("hello");
-        execlp("whoami", "whoami", (char *)NULL);
-        // if (execl(cmd, cmd2, flags, f, (char *)NULL) == -1)
-        //     perror("Error");
+        printf("hit\n");
+        execl(cmd, cmd2, NULL);
     }
     else
-        perror("h");
+    {
+        printf("not hit\n");
+    }
+    (void)wait(&stats);
+    printf("done2\n");
 }

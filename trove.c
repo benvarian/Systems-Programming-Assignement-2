@@ -70,17 +70,17 @@ int main(int argc, char *argv[])
             }
 
             dump(hash, f);
+
             zip(f);
-            // printf("yo");
         }
+       
         if (r | u)
         {
-            // begin with reading zip file that is created with zcat into stdout
-            // move it into hashmap then build new hashmap with new filelist
-            // if strcmp matches simply delete the data
-            // then move the data back into a zip folder
+            //     // begin with reading zip file that is created with zcat into stdout
+            //     // move it into hashmap then build new hashmap with new filelist
+            //     // if strcmp matches simply delete the data
+            //     // then move the data back into a zip folder
             printf("Updating trove file...\n");
-
             unZip(f);
         }
 
