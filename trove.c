@@ -1,5 +1,6 @@
 //  CITS2002 Project 2 2022
 //  Student1:   23215049  Varian   Benjamin   100
+//  Student2: 	23164864  Lindsay  Daniel       0
 
 #include "trove.h"
 
