@@ -52,10 +52,10 @@ int main(int argc, char *argv[])
             }
         }
         // test for just searching for words and as well as supplying trove file name
-        if (b | r | u)
+        if (b)
         {
             HASHTABLE *hash = hashtable_new();
-            printf("\nBuilding a trove file...\n");
+            printf("Building a trove file...\n");
             troveFile(f, b);
             for (int index = optind; index < argc; index++)
             {
@@ -70,6 +70,18 @@ int main(int argc, char *argv[])
             }
 
             dump(hash, f);
+            zip(f);
+            // printf("yo");
+        }
+        if (r | u)
+        {
+            // begin with reading zip file that is created with zcat into stdout
+            // move it into hashmap then build new hashmap with new filelist
+            // if strcmp matches simply delete the data
+            // then move the data back into a zip folder
+            printf("Updating trove file...\n");
+
+            unZip(f);
         }
 
         return 0;

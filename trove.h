@@ -12,8 +12,9 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <locale.h>
+#include <signal.h>
 
-#define HASHTABLE_SIZE 997
+#define HASHTABLE_SIZE 10
 typedef struct _list
 {
     char *string;
@@ -31,6 +32,11 @@ extern int isDirectory(char *);
 extern void regex(char *, int, HASHTABLE *);
 // move the hashtable data into the "trove" file.
 extern void dump(HASHTABLE *, char *);
+// zip the trove file using fork and execl
+extern void zip(char *);
+// grab the stdout into a pipe and simply make a new hashtable contianing that data then do requried operations on it and zip it again
+extern void unZip(char *);
+
 
 // validate if a word is valid or not
 extern bool validWord(char[], int);

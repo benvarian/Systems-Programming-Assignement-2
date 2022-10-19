@@ -38,7 +38,7 @@ LIST *list_new_item(char *newstring)
     new->string = strdup(newstring);
 
     // printf("%s:%s\n", new->string, new->word);
-    if (new->string == NULL )
+    if (new->string == NULL)
     {
         perror("Error allocation memory");
     }
@@ -71,7 +71,7 @@ void list_print(LIST *list)
             printf("%s", list->string);
             if (list->next != NULL)
             {
-                printf(" -> ");
+                printf("\n");
             }
             list = list->next;
         }
@@ -124,7 +124,7 @@ void hashtable_print(HASHTABLE *h)
 {
     for (int i = 0; i < HASHTABLE_SIZE; i++)
     {
-        printf("--%i--\n", i);
+        // printf("--%i--\n", i);
         list_print(h[i]);
     }
 }

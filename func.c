@@ -6,7 +6,7 @@ void regex(char *fn, int searchSize, HASHTABLE *hash)
     // // then test the length of the word with the length then if its valid hashtable_add
     // if is valid add to gloably declared hashtable
     FILE *fp = fopen(fn, "r");
-
+    // char b[PATH_MAX ];
     char buf[PATH_MAX];
     char wordbuf[PATH_MAX];
     while (fscanf(fp, "%1023s", wordbuf) != EOF)
@@ -14,10 +14,11 @@ void regex(char *fn, int searchSize, HASHTABLE *hash)
         if (validWord(wordbuf, searchSize))
         {
             // printf("%s", fn);
-            strcpy(buf, fn);
+            // duping the relapath up so it caters for the files that are passed directly to the function from trove.c
+            strcpy(buf, realpath(fn, NULL));
             strcat(buf, ":");
             strcat(buf, wordbuf);
-            // printf("%s\n", buf);
+
             hashtable_add(hash, buf);
         }
     }
@@ -213,10 +214,65 @@ void dump(HASHTABLE *hash, char *f)
     else
     {
         int fp = open(buf, O_WRONLY);
-        char buf[50] = "hello world my name is ben\n";
+        // char buf[50] = "hello world my name is ben\n";
         if (fp == -1)
             perror("Error");
-        write(fp, buf, strlen(buf));
+        // write(fp, buf, strlen(buf));
+
+        // we are going to implement a pipe to send all the stdout to the trove-file for storage
+        dup2(fp, STDOUT_FILENO);
+        hashtable_print(hash);
         close(fp);
+        // reopen STDOUT pipe
+        // if theres a better way to do this pls put it in report
+        int fd = open("/dev/tty", O_WRONLY);
+        stdout = fdopen(fd, "w");
     }
+}
+
+void zip(char *trove)
+{
+
+    char *cmd = "/usr/bin/gzip";
+    char *cmd2 = "gzip";
+    char *args = "-qf";
+
+    char path[PATH_MAX];
+    strcpy(path, "/tmp/");
+    strcat(path, trove);
+    int pid = fork();
+
+    if (pid == 0)
+    {
+        if (execl(cmd, cmd2, args, path, (char *)NULL) == -1)
+            perror("Error:");
+    }
+}
+void unZip(char *file)
+{
+    // HASHTABLE *hash = hashtable_new();
+    // char *cmd = "/usr/bin/zcat";
+    // char *cmd2 = "zcat";
+    // char *flags = "-f";
+
+    char path[PATH_MAX];
+    strcpy(path, "/tmp/");
+    strcat(path, file);
+    strcat(path, ".gz");
+    // char *f = realpath(path, NULL);
+    int pid = fork();
+    // if (pid != 0)
+    //     wait(NULL);
+    printf("%d\n", pid);
+    kill(pid - 1,15);
+
+    if (pid == 0)
+    {
+        printf("hello");
+        execlp("whoami", "whoami", (char *)NULL);
+        // if (execl(cmd, cmd2, flags, f, (char *)NULL) == -1)
+        //     perror("Error");
+    }
+    else
+        perror("h");
 }
