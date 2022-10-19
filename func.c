@@ -1,6 +1,6 @@
 #include "trove.h"
 
-void regex(char *fn, int searchSize)
+void regex(char *fn, int searchSize, HASHTABLE *hash)
 {
 
     // // then test the length of the word with the length then if its valid hashtable_add
@@ -8,26 +8,29 @@ void regex(char *fn, int searchSize)
     FILE *fp = fopen(fn, "r");
 
     char buf[PATH_MAX];
-    while (fscanf(fp, "%1023s", buf) != EOF)
+    char wordbuf[PATH_MAX];
+    while (fscanf(fp, "%1023s", wordbuf) != EOF)
     {
-        // if (validWord(buf, size))
-        // {
-        //     printf("%s\n", buf);
-        // }
-        // printf("%s:%d\n", buf, validWord(buf, searchSize));
+        if (validWord(wordbuf, searchSize))
+        {
+            // printf("%s", fn);
+            strcpy(buf, fn);
+            strcat(buf, ":");
+            strcat(buf, wordbuf);
+            // printf("%s\n", buf);
+            hashtable_add(hash, buf);
+        }
     }
+
     fclose(fp);
 }
-void myPrint(void)
-{
-    printf("hi");
-}
+
 void usage(void)
 {
     printf("./trove [-f trovefile] [-b | -r | -u] [-l length] [filelist | word]\n");
 }
 
-void search(char *fn, int indent, int searchSize)
+void search(char *fn, int indent, int searchSize, HASHTABLE *hash)
 {
     DIR *dir;
     struct dirent *entry;
@@ -52,11 +55,11 @@ void search(char *fn, int indent, int searchSize)
                 else if (S_ISREG(info.st_mode))
                 {
                     char buf[PATH_MAX];
-                    regex(realpath(path, buf), searchSize);
+                    regex(realpath(path, buf), searchSize, hash);
                 }
                 else if (S_ISDIR(info.st_mode))
                 {
-                    search(path, indent + 1, searchSize);
+                    search(path, indent + 1, searchSize, hash);
                 }
             }
         }
@@ -195,4 +198,25 @@ char *strndup(const char *s, size_t n)
         p[n1] = '\0';
     }
     return p;
+}
+void dump(HASHTABLE *hash, char *f)
+{
+
+    // move the hashtable data into the "trove" file.
+    char buf[PATH_MAX + 1];
+    strcpy(buf, "/tmp/");
+    strcat(buf, f);
+    if (access(buf, R_OK) != 0)
+    {
+        perror("Error");
+    }
+    else
+    {
+        int fp = open(buf, O_WRONLY);
+        char buf[50] = "hello world my name is ben\n";
+        if (fp == -1)
+            perror("Error");
+        write(fp, buf, strlen(buf));
+        close(fp);
+    }
 }

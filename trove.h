@@ -11,13 +11,7 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <ctype.h>
-
-#define die(e)                      \
-    do                              \
-    {                               \
-        fprintf(stderr, "%s\n", e); \
-        exit(EXIT_FAILURE);         \
-    } while (0);
+#include <locale.h>
 
 #define HASHTABLE_SIZE 997
 typedef struct _list
@@ -29,33 +23,34 @@ typedef struct _list
 typedef LIST *HASHTABLE;
 
 extern void usage(void);
-// extern void print(bool, bool, bool, char *);
-extern void myPrint(void);
-extern void search(char *, int, int);
+
+extern void search(char *, int, int, HASHTABLE *);
 // Checks if the directory addtional arg is a directory or file
 extern int isDirectory(char *);
 // regex function
-extern void regex(char *, int);
+extern void regex(char *, int, HASHTABLE *);
+// move the hashtable data into the "trove" file.
+extern void dump(HASHTABLE *, char *);
 
 // validate if a word is valid or not
 extern bool validWord(char[], int);
 // try to locate the trove file and if it isnt found and b isnt true throw perror
-extern void troveFile(char *, bool );
+extern void troveFile(char *, bool);
 
 //  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
 extern HASHTABLE *hashtable_new(void);
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
-extern void hashtable_add(HASHTABLE *, char *string);
+extern void hashtable_add(HASHTABLE *, char *);
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-extern bool hashtable_find(HASHTABLE *, char *string);
+extern bool hashtable_find(HASHTABLE *, char *);
 
 //  'CREATE' A NEW, EMPTY LIST
 extern LIST *list_new(void);
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
-extern LIST *list_add(LIST *list, char *newstring);
+extern LIST *list_add(LIST *list, char *);
 
 //  DETERMINE IF A REQUIRED ITEM (A STRING) IS STORED IN A GIVEN LIST
 extern bool list_find(LIST *list, char *wanted);
@@ -65,5 +60,4 @@ extern void list_print(LIST *list);
 
 extern void hashtable_print(HASHTABLE *);
 
-extern char * strndup_daniel(const char *, size_t);
-
+extern char *strndup_daniel(const char *, size_t);

@@ -8,6 +8,7 @@
 
 int main(int argc, char *argv[])
 {
+    setlocale(LC_ALL, "en_US.UTF-8");
     if (argc <= 1)
     {
         usage();
@@ -50,21 +51,25 @@ int main(int argc, char *argv[])
                 break;
             }
         }
+        // test for just searching for words and as well as supplying trove file name
         if (b | r | u)
         {
+            HASHTABLE *hash = hashtable_new();
             printf("\nBuilding a trove file...\n");
-            troveFile(f,b);
+            troveFile(f, b);
             for (int index = optind; index < argc; index++)
             {
                 if (isDirectory(argv[index]))
                 {
-                    search(argv[index], indent, searchSize);
+                    search(argv[index], indent, searchSize, hash);
                 }
                 else
                 {
-                    regex(argv[index], searchSize);
+                    regex(argv[index], searchSize, hash);
                 }
             }
+
+            dump(hash, f);
         }
 
         return 0;

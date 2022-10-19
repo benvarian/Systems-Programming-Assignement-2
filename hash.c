@@ -36,7 +36,9 @@ LIST *list_new_item(char *newstring)
         perror("Error allocation memory");
     }
     new->string = strdup(newstring);
-    if (new->string == NULL)
+
+    // printf("%s:%s\n", new->string, new->word);
+    if (new->string == NULL )
     {
         perror("Error allocation memory");
     }
@@ -105,15 +107,15 @@ HASHTABLE *hashtable_new(void)
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
 void hashtable_add(HASHTABLE *hashtable, char *string)
 {
-    uint32_t h = hash_string(string) % HASHTABLE_SIZE; // choose list
-    // printf("%d:%s\n", h, string);
+    uint32_t h = hash_string(string) % HASHTABLE_SIZE;
+    // printf("%s:%s\n", string);
     hashtable[h] = list_add(hashtable[h], string);
 }
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
 bool hashtable_find(HASHTABLE *hashtable, char *string)
 {
-    uint32_t h = hash_string(string) % HASHTABLE_SIZE; // choose list
+    uint32_t h = hash_string(string) % HASHTABLE_SIZE;
 
     return list_find(hashtable[h], string);
 }
@@ -122,7 +124,7 @@ void hashtable_print(HASHTABLE *h)
 {
     for (int i = 0; i < HASHTABLE_SIZE; i++)
     {
-        printf("\n--%i--", i);
+        printf("--%i--\n", i);
         list_print(h[i]);
     }
 }
