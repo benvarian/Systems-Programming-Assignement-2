@@ -73,7 +73,10 @@ int main(int argc, char *argv[])
 
             zip(f);
         }
-       
+        while (wait(NULL) != -1 || errno != ECHILD)
+        {
+            printf("done1\n");
+        }
         if (r | u)
         {
             //     // begin with reading zip file that is created with zcat into stdout
@@ -82,6 +85,10 @@ int main(int argc, char *argv[])
             //     // then move the data back into a zip folder
             printf("Updating trove file...\n");
             unZip(f);
+        }
+        while (wait(NULL) != -1 || errno != ECHILD)
+        {
+            printf("done2\n");
         }
 
         return 0;
