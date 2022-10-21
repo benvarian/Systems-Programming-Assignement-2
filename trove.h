@@ -66,4 +66,4 @@ extern void list_print(LIST *list);
 
 extern void hashtable_print(HASHTABLE *);
 
-extern char *strndup_daniel(const char *, size_t);
+

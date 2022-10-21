@@ -164,6 +164,7 @@ void troveFile(char *file, bool b)
         {
             printf("Existing trove-file has been found, overwriting\n");
             remove(realpath(filelocation, buf));
+            // fprintf(stdout, "%s\n\n", filelocation);
             FILE *fp = fopen(filelocation, "w");
             if (fp == NULL)
             {
@@ -176,6 +177,8 @@ void troveFile(char *file, bool b)
             char fulldir[PATH_MAX];
             strcpy(fulldir, "/tmp/");
             strcat(fulldir, file);
+            strcat(fulldir, ".txt");
+
             FILE *fp = fopen(fulldir, "w");
             if (fp == NULL)
             {
@@ -185,21 +188,6 @@ void troveFile(char *file, bool b)
     }
 }
 
-char *strndup(const char *s, size_t n)
-{
-    char *p;
-    size_t n1;
-
-    for (n1 = 0; n1 < n && s[n1] != '\0'; n1++)
-        continue;
-    p = malloc(n + 1);
-    if (p != NULL)
-    {
-        memcpy(p, s, n1);
-        p[n1] = '\0';
-    }
-    return p;
-}
 void dump(HASHTABLE *hash, char *f)
 {
 
@@ -207,6 +195,8 @@ void dump(HASHTABLE *hash, char *f)
     char buf[PATH_MAX + 1];
     strcpy(buf, "/tmp/");
     strcat(buf, f);
+    strcat(buf, ".txt");
+    // fprintf(stdout, "%s\n", buf);
     if (access(buf, R_OK) != 0)
     {
         perror("Error");
@@ -214,10 +204,9 @@ void dump(HASHTABLE *hash, char *f)
     else
     {
         int fp = open(buf, O_WRONLY);
-        // char buf[50] = "hello world my name is ben\n";
+
         if (fp == -1)
             perror("Error");
-        // write(fp, buf, strlen(buf));
 
         // we are going to implement a pipe to send all the stdout to the trove-file for storage
         dup2(fp, STDOUT_FILENO);
@@ -240,7 +229,8 @@ void zip(char *trove)
     char path[PATH_MAX];
     strcpy(path, "/tmp/");
     strcat(path, trove);
-
+    strcat(path, ".txt");
+    // fprintf(stdout, "%s", path);
     pid_t childpid = fork();
     if (childpid == 0)
     {
@@ -258,15 +248,16 @@ void unZip(char *file)
     char *f = realpath(path, NULL);
     char *cmd = "/usr/bin/zcat";
     char *cmd2 = "zcat";
-    char *flags = "-f";
+    char *flags = "-c";
     pid_t pid = fork();
-    // printf("%d\n", pid);
     if (pid == 0)
     {
-        printf("hit\n");
+        fprintf(stdout, "hit\n");
+        // if (execlp("whoami", "whoami", (char *)NULL) == -1)
+        //     fprintf(stdout, "hit2\n");
+
         if (execl(cmd, cmd2, flags, f, (char *)NULL) == -1)
             perror("Error:");
     }
-    
-    
+    // printf("hit2\n");
 }

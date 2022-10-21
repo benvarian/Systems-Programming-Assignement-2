@@ -69,12 +69,12 @@ int main(int argc, char *argv[])
             }
 
             dump(hash, f);
-
             zip(f);
-        }
-        while (wait(NULL) != -1 || errno != ECHILD)
-        {
-            printf("done1\n");
+            // this part here is ran in the parent process and waits for the child process 
+            // to finish to process basically allowing another fork to occur in the unzip process
+            int status = 0;
+            while (wait(&status) > 0)
+                ;
         }
         if (r | u)
         {
@@ -84,10 +84,14 @@ int main(int argc, char *argv[])
             //     // then move the data back into a zip folder
             printf("Updating trove file...\n");
             unZip(f);
-        }
-        while (wait(NULL) != -1 || errno != ECHILD)
-        {
-            printf("done2\n");
+            int status = 0;
+            while (wait(&status) > 0)
+                ;
+            printf("done\n");
+            // while (wait(NULL) != -1 || errno != ECHILD)
+            // {
+            //     printf("done2\n");
+            // }
         }
 
         return 0;
