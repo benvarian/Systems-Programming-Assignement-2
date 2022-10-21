@@ -22,13 +22,13 @@ typedef struct _list
 } LIST;
 
 typedef LIST *HASHTABLE;
-
+// print to stderr the usage function e
 extern void usage(void);
-
+// simple recursive directory search that checks if its reg file or dir
 extern void search(char *, int, int, HASHTABLE *);
 // Checks if the directory addtional arg is a directory or file
 extern int isDirectory(char *);
-// regex function
+// checks if its a valid word and if so adds it to the hashtable
 extern void regex(char *, int, HASHTABLE *);
 // move the hashtable data into the "trove" file.
 extern void dump(HASHTABLE *, char *);
@@ -36,7 +36,8 @@ extern void dump(HASHTABLE *, char *);
 extern void zip(char *);
 // grab the stdout into a pipe and simply make a new hashtable contianing that data then do requried operations on it and zip it again
 extern void unZip(char *);
-
+// checks if the l number is valid for length of a word
+extern bool lenCheck(int);
 
 // validate if a word is valid or not
 extern bool validWord(char[], int);
@@ -65,5 +66,3 @@ extern bool list_find(LIST *list, char *wanted);
 extern void list_print(LIST *list);
 
 extern void hashtable_print(HASHTABLE *);
-
-
