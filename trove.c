@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         if (b)
         {
             HASHTABLE *hash = hashtable_new();
-            printf("Building a trove file...\n");
+            printf("\tBuilding a trove file...\n");
             troveFile(f, b);
             // this part just goes through the extra commands that are parsed into the program and checks if they are a 
             // directory or reg file and does the appropriate steps to futher progress the function
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
             //     // move it into hashmap then build new hashmap with new filelist
             //     // if strcmp matches simply delete the data
             //     // then move the data back into a zip folder
-            printf("Updating trove file...\n");
+            printf("\tUpdating trove file...\n");
             unZip(f);
             int status = 0;
             while (wait(&status) > 0)
