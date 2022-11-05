@@ -1,10 +1,7 @@
 //  CITS2002 Project 2 2022
-//  Student1:   23215049  Varian   Benjamin   100
+//  Student1:   23215049  Varian   Benjamin  
 
 // program compiled and ran on macos monterey 12.6
-
-// I had the same partner as last time who was "in my team" up until the 21st and simply removed himself from the team
-// i will provide git logs for proof if anything can be done in the zipped folder
 
 #include "trove.h"
 
